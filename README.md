@@ -1,4 +1,4 @@
-
+## Machine learning
 
 ```python
 import warnings
@@ -88,8 +88,6 @@ def plot_data(x, y, model=None, label_x="x", label_y="y"):
         
     plt.show()
 ```
-
-## Machine learning
 
 ## Regression
 
