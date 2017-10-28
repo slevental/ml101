@@ -1,15 +1,15 @@
 
 
 ```python
+import warnings
+warnings.filterwarnings('ignore')
+
 # Add all necessary imports here
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import random
-%matplotlib inline
 
-plt.style.reload_library()
-plt.style.use("ggplot")
 import math
 from numpy.random import *
 import seaborn as sns
@@ -35,34 +35,28 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
 import graphviz
-import warnings
-warnings.filterwarnings('ignore')
 
+%matplotlib inline
+plt.style.reload_library()
+plt.style.use("ggplot")
 pd.options.display.float_format = '{:,.2f}'.format
 np.set_printoptions(precision=3)
 np.random.seed(42)
-
-#plt.xkcd()
 ```
 
 
 ```python
-# utility function to plot the decision surface
 def plot_surface(est, x_1, x_2, ax=None, threshold=0.0, contourf=False):
-    """Plots the decision surface of ``est`` on features ``x1`` and ``x2``. """
     xx1, xx2 = np.meshgrid(np.linspace(x_1.min(), x_1.max(), 100), 
                            np.linspace(x_2.min(), x_2.max(), 100))
-    # plot the hyperplane by evaluating the parameters on the grid
-    X_pred = np.c_[xx1.ravel(), xx2.ravel()]  # convert 2d grid into seq of points
-    if hasattr(est, 'predict_proba'):  # check if ``est`` supports probabilities
-        # take probability of positive class
+    X_pred = np.c_[xx1.ravel(), xx2.ravel()]
+    if hasattr(est, 'predict_proba'):
         pred = est.predict_proba(X_pred)[:, 1]
     else:
         pred = est.predict(X_pred)
-    Z = pred.reshape((100, 100))  # reshape seq to grid
+    Z = pred.reshape((100, 100))
     if ax is None:
         ax = plt.gca()
-    # plot line via contour plot
 
     if contourf:
         ax.contourf(xx1, xx2, Z, levels=np.linspace(0, 1.0, 10), cmap=plt.cm.coolwarm, alpha=0.6)
@@ -85,13 +79,6 @@ def plot_data(x, y, model=None, label_x="x", label_y="y"):
     plt.xlabel(label_x)
     plt.ylabel(label_y)
 
-#     plt.legend((left, stayed),
-#            ('positive', 'negative'),
-#            scatterpoints=1,
-#            loc='lower left',
-#            ncol=3,
-#            fontsize=8)
-    
     if model:
         plot_surface(model, x0, x1, threshold=0.5, contourf=True)
         
@@ -191,10 +178,6 @@ plt.plot(x, optimal_p * x, color='k');
 ```
 
 
-![png](ML101_files/ML101_11_0.png)
-
-
-
 ```python
 x_vec = x.reshape(len(x), 1)
 regression = LinearRegression()
@@ -205,13 +188,6 @@ plt.plot(x, regression.predict(x_vec), color='k')
 plt.xlabel('Input data'); plt.ylabel('Output data')
 print(f'F(x) = {regression.coef_[0]:.2f} * x');
 ```
-
-    F(x) = 1.97 * x
-
-
-
-![png](ML101_files/ML101_12_1.png)
-
 
 ### Algorithm
 
@@ -242,10 +218,6 @@ y = (x1+x2 + 50 * np.random.rand(n) - 25) > 0
 plot_data(x, y)
 ```
 
-
-![png](ML101_files/ML101_17_0.png)
-
-
 ### Using regression for classification
 
 * Using the same approach from optimization
@@ -259,10 +231,6 @@ regression = LogisticRegression()
 regression.fit(train, train_y);
 plot_data(train, train_y, regression)
 ```
-
-
-![png](ML101_files/ML101_19_0.png)
-
 
 ### What if data is not easly separable?
 
@@ -285,19 +253,11 @@ plot_data(x, y)
 ```
 
 
-![png](ML101_files/ML101_22_0.png)
-
-
-
 ```python
 regression = LogisticRegression()
 regression.fit(train, train_y);
 plot_data(train, train_y, regression)
 ```
-
-
-![png](ML101_files/ML101_23_0.png)
-
 
 
 ```python
@@ -311,20 +271,12 @@ plot_data(train[["x1^2", "x2^2"]], train_y)
 ```
 
 
-![png](ML101_files/ML101_25_0.png)
-
-
-
 ```python
 new_train = train[["x1^2", "x2^2"]]
 regression = LogisticRegression()
 regression.fit(new_train, train_y);
 plot_data(new_train, train_y, regression)
 ```
-
-
-![png](ML101_files/ML101_26_0.png)
-
 
 
 ```python
@@ -341,23 +293,12 @@ new_train.columns = ['1', 'x1', 'x2', 'x1^2','x1 * x2', 'x2^2']
 print(new_train.head().to_string(index=False))
 ```
 
-    1    x1    x2     x1^2  x1 * x2     x2^2
-    1.00 -9.98 80.72    99.50  -805.21 6,515.97
-    1.00  8.80 91.16    77.50   802.55 8,311.04
-    1.00 50.97 24.89 2,597.69 1,268.33   619.27
-    1.00 -2.32 57.35     5.39  -133.12 3,289.03
-    1.00  2.02 72.58     4.09   146.74 5,267.29
-
-
 
 ```python
 regression = LogisticRegression()
 regression.fit(new_train, train_y)
 print(f"Testing accuracy: {accuracy_score(test_y, regression.predict(new_test)):.3f}")
 ```
-
-    Testing accuracy: 1.000
-
 
 
 ```python
@@ -394,10 +335,6 @@ plot_data(x, y)
 ```
 
 
-![png](ML101_files/ML101_31_0.png)
-
-
-
 ```python
 regression = LogisticRegression(C=0.01)
 model = Pipeline(steps=[
@@ -408,18 +345,10 @@ plot_data(train, train_y, model)
 ```
 
 
-![png](ML101_files/ML101_32_0.png)
-
-
-
 ```python
 print(f"Training accuracy: {accuracy_score(train_y, model.predict(train)):.3f}")
 print(f"Testing accuracy: {accuracy_score(test_y, model.predict(test)):.3f}")
 ```
-
-    Training accuracy: 0.647
-    Testing accuracy: 0.575
-
 
 ### Regularization
 
@@ -504,10 +433,6 @@ def show_overfitting():
 show_overfitting()
 ```
 
-
-![png](ML101_files/ML101_37_0.png)
-
-
 ### So what is regularization?
 
 * It's a penalty for parameters 
@@ -540,18 +465,10 @@ plot_data(train, train_y, model)
 ```
 
 
-![png](ML101_files/ML101_41_0.png)
-
-
-
 ```python
 print(f"Training accuracy: {accuracy_score(train_y, model.predict(train)):.3f}")
 print(f"Testing accuracy: {accuracy_score(test_y, model.predict(test)):.3f}")
 ```
-
-    Training accuracy: 0.978
-    Testing accuracy: 0.863
-
 
 
 ```python
@@ -570,10 +487,6 @@ train, test, train_y, test_y = train_test_split(x, y, test_size=0.2)
 ```python
 plot_data(x, y)
 ```
-
-
-![png](ML101_files/ML101_44_0.png)
-
 
 
 ```python
@@ -618,20 +531,12 @@ plot3d(x['x1'], x['x2'], x['gaussian'])
 ```
 
 
-![png](ML101_files/ML101_47_0.png)
-
-
-
 ```python
 train, test, train_y, test_y = train_test_split(x, y, test_size=0.2)
 logistic = LogisticRegression()
 logistic.fit(train, train_y);
 plot3d(x['x1'], x['x2'], x['gaussian'], logistic)
 ```
-
-
-![png](ML101_files/ML101_48_0.png)
-
 
 ### SVM
 
@@ -660,17 +565,13 @@ model.fit(train, train_y)
 plot_data(train, train_y, model)
 ```
 
-
-![png](ML101_files/ML101_51_0.png)
-
-
 ## Let's try some real problem
 
 ![kaggle.png](img/kaggle.png)
 
 
 ```python
-data = pd.read_csv('../data/HR_comma_sep.csv', index_col=None)
+data = pd.read_csv('data/HR_comma_sep.csv', index_col=None)
 train, test = train_test_split(data, test_size=0.2)
 
 features_used = ['average_montly_hours',
@@ -686,68 +587,6 @@ y = train['left']
 
 Xy = X.join(y).sample(frac=1)
 ```
-
-
-    ---------------------------------------------------------------------------
-
-    FileNotFoundError                         Traceback (most recent call last)
-
-    <ipython-input-44-76aa21c55c7b> in <module>()
-    ----> 1 data = pd.read_csv('../data/HR_comma_sep.csv', index_col=None)
-          2 train, test = train_test_split(data, test_size=0.2)
-          3 
-          4 features_used = ['average_montly_hours',
-          5                  'satisfaction_level',
-
-
-    ~/anaconda3/envs/mspell/lib/python3.6/site-packages/pandas/io/parsers.py in parser_f(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, escapechar, comment, encoding, dialect, tupleize_cols, error_bad_lines, warn_bad_lines, skipfooter, skip_footer, doublequote, delim_whitespace, as_recarray, compact_ints, use_unsigned, low_memory, buffer_lines, memory_map, float_precision)
-        653                     skip_blank_lines=skip_blank_lines)
-        654 
-    --> 655         return _read(filepath_or_buffer, kwds)
-        656 
-        657     parser_f.__name__ = name
-
-
-    ~/anaconda3/envs/mspell/lib/python3.6/site-packages/pandas/io/parsers.py in _read(filepath_or_buffer, kwds)
-        403 
-        404     # Create the parser.
-    --> 405     parser = TextFileReader(filepath_or_buffer, **kwds)
-        406 
-        407     if chunksize or iterator:
-
-
-    ~/anaconda3/envs/mspell/lib/python3.6/site-packages/pandas/io/parsers.py in __init__(self, f, engine, **kwds)
-        762             self.options['has_index_names'] = kwds['has_index_names']
-        763 
-    --> 764         self._make_engine(self.engine)
-        765 
-        766     def close(self):
-
-
-    ~/anaconda3/envs/mspell/lib/python3.6/site-packages/pandas/io/parsers.py in _make_engine(self, engine)
-        983     def _make_engine(self, engine='c'):
-        984         if engine == 'c':
-    --> 985             self._engine = CParserWrapper(self.f, **self.options)
-        986         else:
-        987             if engine == 'python':
-
-
-    ~/anaconda3/envs/mspell/lib/python3.6/site-packages/pandas/io/parsers.py in __init__(self, src, **kwds)
-       1603         kwds['allow_leading_cols'] = self.index_col is not False
-       1604 
-    -> 1605         self._reader = parsers.TextReader(src, **kwds)
-       1606 
-       1607         # XXX
-
-
-    pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader.__cinit__ (pandas/_libs/parsers.c:4209)()
-
-
-    pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader._setup_parser_source (pandas/_libs/parsers.c:8873)()
-
-
-    FileNotFoundError: File b'../data/HR_comma_sep.csv' does not exist
-
 
 
 ```python
@@ -937,7 +776,7 @@ fold = KFold(len(train), n_folds=5, shuffle=True)
 
 ```python
 polynomial_features = PolynomialFeatures()
-logistic = linear_model.LogisticRegression(class_weight='balanced', max_iter=200)
+logistic = linear_model.LogisticRegression(class_weight='balanced', max_iter=10)
 pipe = Pipeline(steps=[
     ('polynomial', polynomial_features), 
     ('logistic', logistic)
@@ -958,6 +797,7 @@ estimator = RandomizedSearchCV(
     pipe,
     scoring='roc_auc',
     cv=fold,
+    n_iter=20,
     param_distributions=dict(
         polynomial__degree=degrees,
         logistic__C=Cs,
@@ -966,6 +806,11 @@ estimator = RandomizedSearchCV(
 )
 
 estimator.fit(train[features_used], train['left']);
+```
+
+
+```python
+print(estimator.best_params_)
 ```
 
 
@@ -981,11 +826,6 @@ plot_data(small_X, small_y, estimator)
 
 ```python
 plot_roc_curve(estimator, test)
-```
-
-
-```python
-print(estimator.best_params_)
 ```
 
 
