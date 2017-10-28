@@ -44,6 +44,10 @@ np.set_printoptions(precision=3)
 np.random.seed(42)
 ```
 
+    /Users/stas/anaconda3/envs/mspell/lib/python3.6/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+      "This module will be removed in 0.20.", DeprecationWarning)
+
+
 
 ```python
 def plot_surface(est, x_1, x_2, ax=None, threshold=0.0, contourf=False):
@@ -178,6 +182,10 @@ plt.plot(x, optimal_p * x, color='k');
 ```
 
 
+![png](ML101_files/ML101_11_0.png)
+
+
+
 ```python
 x_vec = x.reshape(len(x), 1)
 regression = LinearRegression()
@@ -188,6 +196,13 @@ plt.plot(x, regression.predict(x_vec), color='k')
 plt.xlabel('Input data'); plt.ylabel('Output data')
 print(f'F(x) = {regression.coef_[0]:.2f} * x');
 ```
+
+    F(x) = 1.97 * x
+
+
+
+![png](ML101_files/ML101_12_1.png)
+
 
 ### Algorithm
 
@@ -218,6 +233,10 @@ y = (x1+x2 + 50 * np.random.rand(n) - 25) > 0
 plot_data(x, y)
 ```
 
+
+![png](ML101_files/ML101_17_0.png)
+
+
 ### Using regression for classification
 
 * Using the same approach from optimization
@@ -231,6 +250,10 @@ regression = LogisticRegression()
 regression.fit(train, train_y);
 plot_data(train, train_y, regression)
 ```
+
+
+![png](ML101_files/ML101_19_0.png)
+
 
 ### What if data is not easly separable?
 
@@ -253,11 +276,19 @@ plot_data(x, y)
 ```
 
 
+![png](ML101_files/ML101_22_0.png)
+
+
+
 ```python
 regression = LogisticRegression()
 regression.fit(train, train_y);
 plot_data(train, train_y, regression)
 ```
+
+
+![png](ML101_files/ML101_23_0.png)
+
 
 
 ```python
@@ -271,12 +302,20 @@ plot_data(train[["x1^2", "x2^2"]], train_y)
 ```
 
 
+![png](ML101_files/ML101_25_0.png)
+
+
+
 ```python
 new_train = train[["x1^2", "x2^2"]]
 regression = LogisticRegression()
 regression.fit(new_train, train_y);
 plot_data(new_train, train_y, regression)
 ```
+
+
+![png](ML101_files/ML101_26_0.png)
+
 
 
 ```python
@@ -293,12 +332,23 @@ new_train.columns = ['1', 'x1', 'x2', 'x1^2','x1 * x2', 'x2^2']
 print(new_train.head().to_string(index=False))
 ```
 
+    1    x1    x2     x1^2  x1 * x2     x2^2
+    1.00 -9.98 80.72    99.50  -805.21 6,515.97
+    1.00  8.80 91.16    77.50   802.55 8,311.04
+    1.00 50.97 24.89 2,597.69 1,268.33   619.27
+    1.00 -2.32 57.35     5.39  -133.12 3,289.03
+    1.00  2.02 72.58     4.09   146.74 5,267.29
+
+
 
 ```python
 regression = LogisticRegression()
 regression.fit(new_train, train_y)
 print(f"Testing accuracy: {accuracy_score(test_y, regression.predict(new_test)):.3f}")
 ```
+
+    Testing accuracy: 1.000
+
 
 
 ```python
@@ -335,6 +385,10 @@ plot_data(x, y)
 ```
 
 
+![png](ML101_files/ML101_31_0.png)
+
+
+
 ```python
 regression = LogisticRegression(C=0.01)
 model = Pipeline(steps=[
@@ -345,10 +399,18 @@ plot_data(train, train_y, model)
 ```
 
 
+![png](ML101_files/ML101_32_0.png)
+
+
+
 ```python
 print(f"Training accuracy: {accuracy_score(train_y, model.predict(train)):.3f}")
 print(f"Testing accuracy: {accuracy_score(test_y, model.predict(test)):.3f}")
 ```
+
+    Training accuracy: 0.650
+    Testing accuracy: 0.550
+
 
 ### Regularization
 
@@ -433,6 +495,10 @@ def show_overfitting():
 show_overfitting()
 ```
 
+
+![png](ML101_files/ML101_37_0.png)
+
+
 ### So what is regularization?
 
 * It's a penalty for parameters 
@@ -465,10 +531,18 @@ plot_data(train, train_y, model)
 ```
 
 
+![png](ML101_files/ML101_41_0.png)
+
+
+
 ```python
 print(f"Training accuracy: {accuracy_score(train_y, model.predict(train)):.3f}")
 print(f"Testing accuracy: {accuracy_score(test_y, model.predict(test)):.3f}")
 ```
+
+    Training accuracy: 0.978
+    Testing accuracy: 0.863
+
 
 
 ```python
@@ -487,6 +561,10 @@ train, test, train_y, test_y = train_test_split(x, y, test_size=0.2)
 ```python
 plot_data(x, y)
 ```
+
+
+![png](ML101_files/ML101_44_0.png)
+
 
 
 ```python
@@ -531,12 +609,20 @@ plot3d(x['x1'], x['x2'], x['gaussian'])
 ```
 
 
+![png](ML101_files/ML101_47_0.png)
+
+
+
 ```python
 train, test, train_y, test_y = train_test_split(x, y, test_size=0.2)
 logistic = LogisticRegression()
 logistic.fit(train, train_y);
 plot3d(x['x1'], x['x2'], x['gaussian'], logistic)
 ```
+
+
+![png](ML101_files/ML101_48_0.png)
+
 
 ### SVM
 
@@ -564,6 +650,10 @@ model = SVC(gamma=0.0001)
 model.fit(train, train_y)
 plot_data(train, train_y, model)
 ```
+
+
+![png](ML101_files/ML101_51_0.png)
+
 
 ## Let's try some real problem
 
@@ -593,6 +683,14 @@ Xy = X.join(y).sample(frac=1)
 print(Xy.head().to_string(index=False))
 ```
 
+    average_montly_hours  satisfaction_level  left
+                     243                0.63     0
+                     169                0.76     0
+                     267                0.50     0
+                     167                0.20     0
+                     145                0.60     0
+
+
 
 ```python
 sub_sample = random_sample(len(X)) > 0.95
@@ -604,6 +702,10 @@ small_y = y[sub_sample]
 ```python
 plot_data(small_X, small_y)
 ```
+
+
+![png](ML101_files/ML101_56_0.png)
+
 
 
 ```python
@@ -636,6 +738,9 @@ def performance(model, dataset):
 performance(NaiveClassifier(), test)
 ```
 
+    Accuracy of NaiveClassifier: 0.8056666666666666
+
+
 
 ```python
 class OptimisticHR(ConfidentClassifier):
@@ -644,6 +749,9 @@ class OptimisticHR(ConfidentClassifier):
 
 performance(OptimisticHR(), test)
 ```
+
+    Accuracy of OptimisticHR: 0.7616666666666667
+
 
 
 ```python
@@ -654,6 +762,9 @@ class PessimisticHR(ConfidentClassifier):
 performance(PessimisticHR(), test)
 ```
 
+    Accuracy of PessimisticHR: 0.23833333333333334
+
+
 
 ```python
 class FairCoin(ConfidentClassifier):
@@ -662,6 +773,9 @@ class FairCoin(ConfidentClassifier):
     
 performance(FairCoin(), test)
 ```
+
+    Accuracy of FairCoin: 0.49866666666666665
+
 
 
 ```python
@@ -678,6 +792,17 @@ def performance(model, dataset):
 performance(NaiveClassifier(), test)
 ```
 
+    Accuracy of NaiveClassifier: 0.8056666666666666
+    Classification report for NaiveClassifier:
+                  precision    recall  f1-score   support
+    
+          False       0.91      0.83      0.87      2285
+           True       0.57      0.73      0.64       715
+    
+    avg / total       0.83      0.81      0.81      3000
+    
+
+
 ![pr](img/precisionrecall.png)
 
 ![f1](img/f1.png)
@@ -686,6 +811,17 @@ performance(NaiveClassifier(), test)
 ```python
 performance(OptimisticHR(), test)
 ```
+
+    Accuracy of OptimisticHR: 0.7616666666666667
+    Classification report for OptimisticHR:
+                  precision    recall  f1-score   support
+    
+          False       0.76      1.00      0.86      2285
+           True       0.00      0.00      0.00       715
+    
+    avg / total       0.58      0.76      0.66      3000
+    
+
 
 
 ```python
@@ -715,9 +851,17 @@ plot_roc_curve(OptimisticHR(), test)
 ```
 
 
+![png](ML101_files/ML101_71_0.png)
+
+
+
 ```python
 plot_roc_curve(NaiveClassifier(), test)
 ```
+
+
+![png](ML101_files/ML101_72_0.png)
+
 
 ## Let's use logistic regresion
 
@@ -729,9 +873,24 @@ plot_data(small_X, small_y, regression)
 ```
 
 
+![png](ML101_files/ML101_74_0.png)
+
+
+
 ```python
 performance(regression, test)
 ```
+
+    Accuracy of LogisticRegression: 0.7713333333333333
+    Classification report for LogisticRegression:
+                  precision    recall  f1-score   support
+    
+          False       0.80      0.93      0.86      2285
+           True       0.54      0.26      0.36       715
+    
+    avg / total       0.74      0.77      0.74      3000
+    
+
 
 
 ```python
@@ -742,9 +901,24 @@ plot_data(small_X, small_y, regression)
 ```
 
 
+![png](ML101_files/ML101_76_0.png)
+
+
+
 ```python
 performance(regression, test)
 ```
+
+    Accuracy of LogisticRegression: 0.7183333333333334
+    Classification report for LogisticRegression:
+                  precision    recall  f1-score   support
+    
+          False       0.89      0.71      0.79      2285
+           True       0.44      0.73      0.55       715
+    
+    avg / total       0.79      0.72      0.74      3000
+    
+
 
 
 ```python
@@ -762,10 +936,25 @@ pipe.fit(train[features_used], train['left']);
 performance(pipe, test)
 ```
 
+    Accuracy of Pipeline: 0.736
+    Classification report for Pipeline:
+                  precision    recall  f1-score   support
+    
+          False       0.88      0.75      0.81      2285
+           True       0.46      0.69      0.55       715
+    
+    avg / total       0.78      0.74      0.75      3000
+    
+
+
 
 ```python
 plot_data(small_X, small_y, pipe)
 ```
+
+
+![png](ML101_files/ML101_80_0.png)
+
 
 
 ```python
@@ -813,10 +1002,24 @@ estimator.fit(train[features_used], train['left']);
 print(estimator.best_params_)
 ```
 
+    {'polynomial__degree': 4, 'logistic__penalty': 'l1', 'logistic__C': 1000.0}
+
+
 
 ```python
 performance(estimator, train)
 ```
+
+    Accuracy of RandomizedSearchCV: 0.733477789815818
+    Classification report for RandomizedSearchCV:
+                  precision    recall  f1-score   support
+    
+          False       0.90      0.73      0.81      9143
+           True       0.46      0.75      0.57      2856
+    
+    avg / total       0.80      0.73      0.75     11999
+    
+
 
 
 ```python
@@ -824,9 +1027,17 @@ plot_data(small_X, small_y, estimator)
 ```
 
 
+![png](ML101_files/ML101_87_0.png)
+
+
+
 ```python
 plot_roc_curve(estimator, test)
 ```
+
+
+![png](ML101_files/ML101_88_0.png)
+
 
 
 ```python
@@ -839,15 +1050,41 @@ clf.fit(train[features_used], train['left']);
 performance(clf, test)
 ```
 
+    Accuracy of DecisionTreeClassifier: 0.913
+    Classification report for DecisionTreeClassifier:
+                  precision    recall  f1-score   support
+    
+          False       0.94      0.95      0.94      2285
+           True       0.82      0.81      0.82       715
+    
+    avg / total       0.91      0.91      0.91      3000
+    
+
+
 
 ```python
 plot_data(small_X, small_y, clf)
 ```
 
 
+![png](ML101_files/ML101_91_0.png)
+
+
+
 ```python
 performance(clf, train)
 ```
+
+    Accuracy of DecisionTreeClassifier: 0.9648304025335445
+    Classification report for DecisionTreeClassifier:
+                  precision    recall  f1-score   support
+    
+          False       0.97      0.98      0.98      9143
+           True       0.93      0.92      0.93      2856
+    
+    avg / total       0.96      0.96      0.96     11999
+    
+
 
 
 ```python
@@ -857,6 +1094,10 @@ plot_learning_curve(clf, "Learning Curve", train[features_used],  train['left'],
 ```
 
 
+![png](ML101_files/ML101_93_0.png)
+
+
+
 ```python
 clf = tree.DecisionTreeClassifier(max_depth=5)
 cv = KFold(len(train), n_folds=5, shuffle=True)
@@ -864,15 +1105,34 @@ plot_learning_curve(clf, "Learning Curve", train[features_used], train['left'], 
 ```
 
 
+![png](ML101_files/ML101_94_0.png)
+
+
+
 ```python
 clf.fit(train[features_used], train['left']);
 performance(clf, train)
 ```
 
+    Accuracy of DecisionTreeClassifier: 0.9159096591382615
+    Classification report for DecisionTreeClassifier:
+                  precision    recall  f1-score   support
+    
+          False       0.91      0.99      0.95      9143
+           True       0.95      0.68      0.79      2856
+    
+    avg / total       0.92      0.92      0.91     11999
+    
+
+
 
 ```python
 plot_data(small_X, small_y, clf)
 ```
+
+
+![png](ML101_files/ML101_96_0.png)
+
 
 
 ```python
@@ -884,6 +1144,13 @@ dot_data = tree.export_graphviz(clf, out_file=None,
 g = graphviz.Source(dot_data)  
 g
 ```
+
+
+
+
+![svg](ML101_files/ML101_97_0.svg)
+
+
 
 ![tree1](img/dtree1.png)
 
@@ -920,6 +1187,14 @@ Xy = X.join(y).sample(frac=1)
 print(X.head().to_string(index=False))
 ```
 
+    average_montly_hours  satisfaction_level  number_project  proj_time  last_evaluation  time_spend_company  Work_accident
+                     148                0.66               5       1.67             0.67                   3              0
+                     237                0.24               6       1.20             0.94                   5              0
+                     181                0.80               5       1.25             0.74                   4              1
+                     136                0.43               2       0.67             0.52                   3              0
+                     236                0.78               5       1.67             0.59                   3              0
+
+
 ### Getting rid of useless features
 
 
@@ -928,6 +1203,10 @@ plt.figure(figsize=(6,6))
 sns.heatmap(Xy.corr(), vmax=1.0, annot=True, cmap='YlGn')
 plt.title('Correlation between features');
 ```
+
+
+![png](ML101_files/ML101_104_0.png)
+
 
 
 ```python
@@ -940,10 +1219,30 @@ clf.fit(X, y);
 performance(clf, test)
 ```
 
+    Accuracy of DecisionTreeClassifier: 0.9776666666666667
+    Classification report for DecisionTreeClassifier:
+                  precision    recall  f1-score   support
+    
+          False       0.99      0.98      0.99      2285
+           True       0.94      0.96      0.95       715
+    
+    avg / total       0.98      0.98      0.98      3000
+    
+
+
 
 ```python
 [print(f"Importance({x}) = {y}") for x, y in zip (features_used, clf.feature_importances_)];
 ```
+
+    Importance(average_montly_hours) = 0.09654514159808582
+    Importance(satisfaction_level) = 0.36471495375154606
+    Importance(number_project) = 0.16690494423880492
+    Importance(proj_time) = 0.04877921024855973
+    Importance(last_evaluation) = 0.14264567117737145
+    Importance(time_spend_company) = 0.17692731239732337
+    Importance(Work_accident) = 0.003482766588308622
+
 
 ### How to visualize
 
@@ -961,6 +1260,10 @@ transformed = pd.DataFrame(dim_reducer.transform(X), index=train.index)
 sample_10perc = random_sample(len(X)) > 0.9
 plot_data(transformed[sample_10perc], y[sample_10perc]);
 ```
+
+
+![png](ML101_files/ML101_110_0.png)
+
 
 
 ```python
@@ -996,9 +1299,24 @@ plot_data(transformed, y, model);
 ```
 
 
+![png](ML101_files/ML101_114_0.png)
+
+
+
 ```python
 performance(pipe, test)
 ```
+
+    Accuracy of Pipeline: 0.9303333333333333
+    Classification report for Pipeline:
+                  precision    recall  f1-score   support
+    
+          False       0.98      0.93      0.95      2285
+           True       0.81      0.92      0.86       715
+    
+    avg / total       0.94      0.93      0.93      3000
+    
+
 
 ## Summary
 
